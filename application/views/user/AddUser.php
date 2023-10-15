@@ -21,6 +21,18 @@ if ($this->session->flashdata('flashgagal')) : ?>
                             <input type="text" class="form-control" placeholder="Nama User" aria-label="Nama User" name="nama_user" required>
                         </div>
                         <div class="mb-3">
+                            <label for="no_hp" class="text-sm">
+                                Nomor Handphone
+                            </label>
+                            <input type="number" class="form-control" placeholder="Nomor Handphone" aria-label="no_hp" name="no_hp" id="no_hp" minlength="11" maxlength="13" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="alamat" class="text-sm">
+                                Alamat
+                            </label>
+                            <textarea class="form-control" name="alamat" id="alamat" placeholder="Alamat"></textarea>
+                        </div>
+                        <div class="mb-3">
                             <label for="username" class="text-sm">
                                 Username
                             </label>

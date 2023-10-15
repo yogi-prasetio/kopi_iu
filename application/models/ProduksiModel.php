@@ -64,9 +64,10 @@ class ProduksiModel extends CI_Model
     }
     public function GetPengeluaran()
     {
-        $now = date("Y-m");
-        $interval = new DateInterval('P1Y');
+        $now = date("2023-09");
+        $interval = new DateInterval('P1Y1M');
         $old = (new DateTime)->sub($interval)->format('Y-m');
+        echo "$old to $now";
         $this->db->select("`tbl_pengeluaran`.`id_bahan`, `nama_bahan`, `satuan`, `LT`, `tgl_pengeluaran`");
         $this->db->select("SUM(`tbl_pengeluaran`.`jumlah_bahan`) AS jumlah");
 

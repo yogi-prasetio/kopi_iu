@@ -42,7 +42,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                                 <a href="<?= base_url("PesananController/Reject/$item->id_pesanan"); ?>" class="badge badge-sm bg-danger" data-toggle="tooltip" data-placement="top" title="Totlak"><i class="fa fa-times"></i></a>
                                                 <?php 
                                             } else {
-                                                if($item->status == FALSE) { 
+                                                if($item->status == true) { 
                                                     echo "<span class='badge badge-sm bg-gradient-danger'>Ditolak</apan>";
                                                 } else {
                                                     echo "<span class='badge badge-sm bg-gradient-success'>Disetujui</apan>";

@@ -139,8 +139,12 @@ class PesananController extends CI_Controller
         for($i=0; $i<count($bahan); $i++){
             $condition = array("id_bahan" => $bahan[$i]->id_bahan);
             $data_bahan = $this->BahanModel->FindBahanRequest($condition);
+            // echo $data_bahan[0]->persediaan;
+            // echo $bahan[$i]->jml_bahan;
+            // die();
             $data = array(
-                "stok" => $data_bahan->stok + $bahan[$i]->jml_bahan,
+                "persediaan" => $data_bahan[0]->persediaan + $bahan[$i]->jml_bahan,
+                "stok" => $data_bahan[0]->stok + $bahan[$i]->jml_bahan,
                 "keterangan" => "Masuk",
             );
             $this->BahanModel->UpdateBahanRequest($condition, $data);
@@ -157,7 +161,7 @@ class PesananController extends CI_Controller
 
     public function Accept($id_pesanan){
         $condition = array('id_pesanan' => $id_pesanan);
-        $payload = array('keterangan' => 'Diterima Supplier', 'status' => 1);
+        $payload = array('keterangan' => 'Diterima Supplier');
         $result = $this->PesananModel->UpdatePesananRequest($condition, $payload);
 
         if($result){    

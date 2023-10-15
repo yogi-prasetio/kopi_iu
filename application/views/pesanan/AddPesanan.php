@@ -93,7 +93,7 @@
                                     <td class="satuan"><?= $row->satuan; ?></td>
                                     <td class="harga"><?= $row->harga; ?></td>
                                     <td>
-                                        <button type="button" class="btn btn-sm btn-success pilih_bahan" id="pilih_bahan"data-dismiss="modal" data-id="<?= $row->id_bahan ?>" >
+                                        <button type="button" class="btn btn-sm btn-success pilih_bhn" id="pilih_bhn" data-dismiss="modal" data-id="<?= $row->id_bahan ?>" >
                                             <i class="fa fa-check"></i></button>
                                         </td>
                                     </tr>
@@ -157,50 +157,14 @@
 
     <script type="text/javascript">
         var data_bhn = [];
-        $(document).ready(function(){
-            $('#data-bahan').DataTable({
-                columnDefs: [
-                {
-                    target: 1,
-                    visible: false,
-                    searchable: true
-                },
-                ],
-                responsive: true,
-                fixedColumns: true,
-                fixedRows: true,
-                searching: true,
-            });
-
-            var table = $('#data-bahan').DataTable();
-            $.fn.dataTable.ext.search.push(
-                function (settings, data, dataIndex) {
-                    var selectedItem = $('#supplier_filter').val()
-                    var supplier = data[1];
-                    if (selectedItem === "" || supplier.includes(selectedItem)) {
-                        return true;
-                    }
-                    return false;
-                }
-                );
-
-            $("#supplier_filter").change(function (e) {
-                table.draw();
-            });
-
-            table.draw();
-
+        $(document).ready(function(){           
             
             $(".btn_tambah").click(function () {
                 $("#tambah_bahan").modal('show');
-            });
+            });          
             
-            if(data_bhn.length == 0){
-                var element = document.getElementById("btn-confirm");
-                element.classList.add("disabled");
-            } 
-
-            $(".pilih_bahan").click(function() {
+            var btnPilih = document.getElementById('pilih_bhn');
+            $(".pilih_bhn").click(function() {
                 $("#tambah_bahan").modal('hide');
 
                 var id = $(this).attr("data-id");
@@ -210,6 +174,11 @@
 
                 pilih_bahan(id, nama, satuan, harga);
             });
+
+            if(data_bhn.length == 0){
+                var element = document.getElementById("btn-confirm");
+                element.classList.add("disabled");
+            } 
 
             $('.close').click(function() {
                 $('#detail_bahan').modal('hide');
@@ -252,6 +221,38 @@
                 $(".btnhapus-link").attr("href", "models/p_bom.php?id="+id);
             });
 
+            var table = $('#data-bahan').DataTable({
+                columnDefs: [
+                {
+                    target: 1,
+                    visible: false,
+                    searchable: true
+                },
+                ],
+                responsive: true,
+                fixedColumns: true,
+                fixedRows: true,
+                searching: true,
+            });
+
+        // var table = $('#data-bahan').DataTable();
+            $.fn.dataTable.ext.search.push(
+                function (settings, data, dataIndex) {
+                    var selectedItem = $('#supplier_filter').val()
+                    var supplier = data[1];
+                    if (selectedItem === "" || supplier.includes(selectedItem)) {
+                        return true;
+                    }
+                    return false;
+                }
+                );
+
+            $("#supplier_filter").change(function (e) {
+                table.draw();
+            });
+
+            table.draw();
+            
         });
 
         function setId(){

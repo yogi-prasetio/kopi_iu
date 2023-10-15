@@ -11,6 +11,7 @@ class MRPModel extends CI_Model
 
     public function GetMRPRequest()
     {
+        $this->db->join("tbl_bahan", "tbl_mrp.id_bahan=tbl_bahan.id_bahan");
         return $this->db->get('tbl_mrp')->result();
     }
     public function FindMRPRequest($condition)

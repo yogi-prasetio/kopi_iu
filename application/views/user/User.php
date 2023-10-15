@@ -18,11 +18,13 @@ if ($this->session->flashdata('flashgagal')) : ?>
                 </div>
                 <div class="card-body px-4 pb-3 pt-0">
                     <div class="table-responsive p-0">
-                        <table class="table align-items-center mb-0" id="data-table">
+                        <table class="table align-items-center mb-0" id="data-table-user">
                             <thead>
                                 <tr class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">
                                     <th>No</th>
                                     <th>Nama User</th>
+                                    <th>No Handphone</th>
+                                    <th>Alamat</th>
                                     <th>Role</th>
                                     <?php
                                     if($this->session->userdata('role')=='Admin'){
@@ -38,6 +40,8 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                     <tr class="text-sm">
                                         <td><?= $no++ ?></td>
                                         <td><?= $item->nama_user ?></td>
+                                        <td><?= $item->no_hp ?></td>
+                                        <td><?= $item->alamat ?></td>
                                         <td><?= $item->role ?></td>
                                         <?php
                                         if($this->session->userdata("role") == "Gudang"){
@@ -62,3 +66,21 @@ if ($this->session->flashdata('flashgagal')) : ?>
             </div>
         </div>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#data-table-user').DataTable({
+                responsive: true,
+                fixedColumns: true,
+                fixedRows: true,
+                columnDefs: [
+                {
+                    render: function(data, type, full, meta){
+                        return "<div class='text-wrap'>" + data + "</div>";
+                    },
+                    targets: 3
+                }
+                ]
+            });
+        });
+    </script>

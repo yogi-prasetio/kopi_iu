@@ -1,3 +1,9 @@
+<?php if ($this->session->flashdata('flashdata')) : ?>
+    <div class="flash-data" data-flashdata="<?= $this->session->flashdata('flashdata'); ?>"></div>
+<?php endif;
+if ($this->session->flashdata('flashgagal')) : ?>
+    <div class="flash-gagal" data-flashgagal="<?= $this->session->flashdata('flashgagal'); ?>"></div>
+<?php endif; ?>
 <div class="container-fluid py-2">
     <div class="row">
         <div class="col-12">
@@ -10,14 +16,17 @@
                     </div>
                     <div class="card-body px-4 pb-3 pt-0">
                         <div class="row col-12 mb-3 mx-2 mr-2">
-                            <select name="bahan" class="form-select mr-2" id="bahan-mrp" required>
+                            <select name="bahan" class="form-select mr-2" id="bahan-mrp" required="true">
                                 <option selected disabled>-- Pilih Bahan --</option>
                                 <?php 
                                 foreach($bahan as $item){
-                                    echo "<option value='".$item->id_bahan."'>".$item->nama_bahan."</option>";
+                                    echo "<option value='".$item->nama_bahan."'>".$item->nama_bahan."</option>";
                                 }
                                 ?>
                             </select>
+                        </div>
+                        <div class="row col-12 mb-3 mx-2 mr-2">
+                            <input type="hidden" name="id_bahan" class="form-control mr-2" id="id_bahan" required>
                         </div>
                         <div class="table-responsive p-0">
                             <table class="table align-items-center mb-0" id="data-pengeluaran">
@@ -33,6 +42,7 @@
                                 <tbody>
                                     <?php $no = 1;
                                     foreach ($pengeluaran as $item) {
+                                        // var_dump($pengeluaran);
                                         ?>
                                         <tr class="text-sm">
                                             <td id="id">
@@ -75,7 +85,7 @@
                 </div>
                 <div class="card-body px-4 pb-3 pt-0">
                     <div class="table-responsive p-0">
-                        <table class="table align-items-center mb-0" id="data-table">
+                        <table class="table align-items-center mb-0" id="data-table-mrp">
                             <thead>
                                 <tr class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">
                                     <th>No</th>
@@ -92,9 +102,14 @@
                                     <tr class="text-sm">
                                         <td><?= $no++ ?></td>
                                         <td><?= $item->nama_bahan ?></td>
-                                        <td><?= $item->bulan ?></td>
-                                        <td><?= $item->POREL ?></td>
-                                        <td><?= $item->POR ?></td>
+                                        <td><?= $item->poq ?></td>
+                                        <td>
+                                            <?php echo round($item->frequensi/1000)." "; 
+                                                if($item->satuan == "ml") { echo 'Liter'; } 
+                                                elseif ($item->satuan == "gram") { echo 'Kg'; }
+                                            ?>
+                                                
+                                        </td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -107,7 +122,13 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#data-pengeluaran').DataTable({
+            $('#data-table-mrp').DataTable({
+                responsive: true,
+                fixedColumns: true,
+                fixedRows: true,
+            });
+            var bahan_inp = document.getElementById("id_bahan");
+            var table_keluar = $('#data-pengeluaran').DataTable({
                 columnDefs: [
                 {
                     target: 0,
@@ -121,18 +142,24 @@
                 info: false,
             })
 
-            var table_keluar = $('#data-pengeluaran').DataTable();
+            // var table_keluar = $('#data-pengeluaran').DataTable();
             $.fn.dataTable.ext.search.push(
                 function (settings, data, dataIndex) {
                     var select = $('#bahan-mrp').val();
-                    var bahan = data[0];
+                    var bahan = data[1];
 
                     if (bahan.includes(select)) {
+                    // alert(bahan[0]);
+                        // console.log('ada');
+                        var id_bahan = data[0];
+                        document.getElementById("id_bahan").value = id_bahan.toString();
                         return true;
-                    } 
-                    return false;
+                    } else {
+                        // console.log('tidak ada');
+                        return false;
+                    }
                 }
-                );
+            );
 
             $("#bahan-mrp").change(function (e) {
                 table_keluar.draw();

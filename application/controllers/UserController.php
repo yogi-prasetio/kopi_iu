@@ -47,12 +47,16 @@ class UserController extends CI_Controller
     public function Insert()
     {
         $name = $this->input->post('nama_user');
+        $no_hp = $this->input->post('no_hp');
+        $alamat = $this->input->post('alamat');
         $username = $this->input->post('username');
         $password = md5($this->input->post('password'));
         $role = $this->input->post('role');
         
         $payload= array(
             'nama_user' => $name,
+            'no_hp' => $no_hp,
+            'alamat' => $alamat,
             'username' => $username,
             'password' => $password,
             'role' => $role
@@ -79,12 +83,16 @@ class UserController extends CI_Controller
     {
         $id = $this->input->post('id');
         $name = $this->input->post('nama_user');
+        $no_hp = $this->input->post('no_hp');
+        $alamat = $this->input->post('alamat');
         $username = $this->input->post('username');
         $password = md5($this->input->post('password'));
         $role = $this->input->post('role');
-        
+
         $payload= array(
             'nama_user' => $name,
+            'no_hp' => $no_hp,
+            'alamat' => $alamat,
             'username' => $username,
             'password' => $password,
             'role' => $role

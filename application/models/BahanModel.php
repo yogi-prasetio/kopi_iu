@@ -43,4 +43,9 @@ class BahanModel extends CI_Model
     {
         return $this->db->get_where('tbl_bahan', $condition)->num_rows();
     }
+    public function GetTotalBeliBahan($condition)
+    {
+        $this->db->sum("beli");
+        return $this->db->get_where('tbl_bahan', $condition)->result();
+    }
 }
