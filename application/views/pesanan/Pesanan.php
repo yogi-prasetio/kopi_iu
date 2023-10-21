@@ -43,20 +43,24 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                         <td><?= $item->nama_user ?></td>
                                         <td><?= $item->tgl_pesanan ?></td>
                                         <td><?= $item->tgl_penerimaan ?></td>
-                                        <td><?= "Rp. ".number_format($item->total_biaya,0,',','.') ?></td>
+                                        <td><?= "Rp.".number_format($item->total_biaya,0,',','.') ?></td>
                                         <td><?= $item->keterangan ?></td>
-                                        <td><?php if($item->status==0){ ?>
-                                            <span class="icon bg-gradient-danger rounded-circle"> </span>
-                                        <?php } else { ?>
-                                            <span class="icon bg-gradient-success rounded-circle"> </span></td>
-                                            <?php
+                                        <td><?php 
+                                        if($item->keterangan=='Pemesanan'){ 
+                                            echo "<span class='badge badge-sm bg-gradient-secondary'>submitted</span>";
+                                        } else if($item->keterangan=='Disetujui Supplier'){ 
+                                            echo "<span class='badge badge-sm bg-gradient-warning'>approved</span>";
+                                        } else if($item->keterangan=='Ditolak Supplier'){ 
+                                            echo "<span class='badge badge-sm bg-gradient-danger'>rejected</span>";
+                                        } else if($item->keterangan=='Diterima'){ 
+                                            echo "<span class='badge badge-sm bg-gradient-success'>accepted</span>";
                                         }
                                         if($this->session->userdata('role')=='Admin'){
                                             ?>
                                             <td class=" text-center">
                                                 <a href="<?= base_url("PesananController/DetailPesanan/$item->id_pesanan"); ?>" class="badge badge-sm bg-info" data-toggle="tooltip" data-placement="top" title="Detail"><i class="fa fa-eye"></i></a>
-                                                <?php if($item->status==1){ ?>
-                                                    <a href="<?= base_url("PesananController/CetakFaktur/$item->id_pesanan"); ?>" class="badge badge-sm bg-secondary" data-toggle="tooltip" data-placement="top" title="Detail"><i class="fa fa-print"></i></a>
+                                                <?php if($item->status==1 || $item->keterangan=='Disetujui Supplier'){ ?>
+                                                    <a href="<?= base_url("PesananController/CetakFaktur/$item->id_pesanan"); ?>" class="badge badge-sm bg-secondary" data-toggle="tooltip" data-placement="top" title="Cetak Faktur"><i class="fa fa-print"></i></a>
                                                 <?php } ?>
                                             </td>
                                         <?php } ?>
@@ -69,3 +73,13 @@ if ($this->session->flashdata('flashgagal')) : ?>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable({
+                responsive: true,
+                fixedColumns: true,
+                fixedRows: true,
+                info: false,
+            });
+        });
+    </script>

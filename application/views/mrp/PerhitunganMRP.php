@@ -11,12 +11,12 @@ if ($this->session->flashdata('flashgagal')) : ?>
                 <form name="mrp" method="POST" action="<?= base_url("MRPController/Proses") ?>">
                     <div class="card-header pb-2">
                         <span class="h6">Material Requirement Planning</span>
-                        <button type="submit" class="btn btn-sm btn-success mx-2" style="float: right;" >PROSES</i></button>
-                        <a class="btn btn-sm btn-secondary mx-2" style="float: right;" href="<?= base_url('ProduksiController/CetakPengeluaran') ?>"><i class="fa fa-print"></i></a>
+                        <button type="submit" class="btn btn-sm btn-success mx-2" id="btn-proses" style="float: right;" >PROSES</i></button>
+                        <a class="btn btn-sm btn-secondary mx-2" style="float: right;" href="<?= base_url('MRPController/CetakMRP') ?>"><i class="fa fa-print"></i></a>
                     </div>
                     <div class="card-body px-4 pb-3 pt-0">
                         <div class="row col-12 mb-3 mx-2 mr-2">
-                            <select name="bahan" class="form-select mr-2" id="bahan-mrp" required="true">
+                            <select name="bahan" class="form-select mr-2" id="bahan-mrp" required>
                                 <option selected disabled>-- Pilih Bahan --</option>
                                 <?php 
                                 foreach($bahan as $item){
@@ -166,5 +166,11 @@ if ($this->session->flashdata('flashgagal')) : ?>
             });
 
             table_keluar.draw();
+
+            $("#btn-proses").addClass('disabled');
+
+            $("#bahan-mrp").change(function() {
+                $("#btn-proses").removeClass('disabled');
+            })
         })
     </script>

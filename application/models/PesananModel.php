@@ -44,6 +44,13 @@ class PesananModel extends CI_Model
     }
 
     //Pesanan Detail
+    public function GetDetailPesanan()
+    {
+        $this->db->join('tbl_bahan', 'tbl_pesanan_detail.id_bahan=tbl_bahan.id_bahan');
+        $this->db->join('tbl_pesanan', 'tbl_pesanan.id_pesanan=tbl_pesanan_detail.id_pesanan');
+        $this->db->join('tbl_user', 'tbl_pesanan.id_supplier=tbl_user.id_user');
+        return $this->db->get('tbl_pesanan_detail')->result();
+    }
     public function GetDetailPesananRequest($condition)
     {
         $this->db->join('tbl_bahan', 'tbl_pesanan_detail.id_bahan=tbl_bahan.id_bahan');

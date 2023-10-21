@@ -234,6 +234,13 @@
                     tambah_bahan(data_bhn);
                 }
             });
+
+            $('#data-table').DataTable({
+                responsive: true,
+                fixedColumns: true,
+                fixedRows: true,
+                info: false,
+            });
         });
 
         function cek_bahan(id, parent) {

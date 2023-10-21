@@ -176,10 +176,10 @@ class BahanController extends CI_Controller
         $i=0;
         foreach ($bahan as $row) {
             $pdf->Cell($header[$i]['length'], 8, $no++, 1,'0', $kolom['align'], $fill);
-            $pdf->Cell($header[$i+1]['length'], 8, $row->nama_bahan,1,'0', 'L', $fill);
-            $pdf->Cell($header[$i+2]['length'], 8, $row->stok,1,'0', $kolom['align'], $fill);
+            $pdf->Cell($header[$i+1]['length'], 8, ' '.$row->nama_bahan,1,'0', 'L', $fill);
+            $pdf->Cell($header[$i+2]['length'], 8, number_format($row->stok,0,',','.').' ',1,'0', 'R', $fill);
             $pdf->Cell($header[$i+3]['length'], 8, $row->satuan,1,'0', $kolom['align'], $fill);
-            $pdf->Cell($header[$i+4]['length'], 8, "Rp. ".number_format($row->harga,0,',','.'),1,'0', $kolom['align'], $fill);
+            $pdf->Cell($header[$i+4]['length'], 8, " Rp. ".number_format($row->harga,0,',','.'),1,'0', 'L', $fill);
             $fill = !$fill;
             $pdf->Ln();
         }

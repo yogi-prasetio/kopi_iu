@@ -53,6 +53,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                 <select name="role" class="form-select">
                                     <option selected disabled>-- Pilih Role --</option>
                                     <option value="Admin" <?= $row->role=='Admin'? 'selected' : ''?>>Admin</option>
+                                    <option value="Customer" <?= $row->role=='Customer'? 'selected' : ''?>>Customer</option>
                                     <option value="Gudang" <?= $row->role=='Gudang'? 'selected' : ''?>>Gudang</option>
                                     <option value="Supplier" <?= $row->role=='Supplier'? 'selected' : ''?>>Supplier</option>
                                 </select>

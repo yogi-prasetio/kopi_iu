@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="<?= base_url() ?>/assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="<?= base_url() ?>/assets/img/logo_iu.png">
     <title>
-        Login • Kopi IU
+        Sign In • Kopi IU
     </title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
@@ -41,7 +41,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                     <p class="mb-0">Enter your username and password to sign in</p>
                                 </div>
                                 <div class="card-body">
-                                    <form role="form" action="<?= base_url('LoginController/SignIn') ?>" method="POST">
+                                    <form role="form" action="<?= base_url('Auth/SignIn') ?>" method="POST">
                                         <div class="mb-3">
                                             <input type="text" class="form-control form-control-lg" placeholder="Username" aria-label="Username" name="username" required>
                                         </div>
@@ -50,6 +50,9 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                         </div>
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Sign in</button>
+                                        </div>
+                                        <div class="text-center mt-3">
+                                            <span>Belum punya akun? <a href="<?= base_url('Auth/SignUp') ?>" class="text-bold">Daftar</a></span>
                                         </div>
                                     </form>
                                 </div>

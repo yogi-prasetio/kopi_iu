@@ -35,8 +35,8 @@
                                     <tr class="text-sm">
                                         <td><?= $no++ ?></td>
                                         <td><?= $item->nama_bahan ?></td>
-                                        <td><?= $item->jml_bahan." ".$item->satuan ?></td>
-                                        <td><?= $item->jml_harga ?></td>
+                                        <td><?= number_format($item->jml_bahan,0,',','.')." ".$item->satuan ?></td>
+                                        <td><?= "Rp.".number_format($item->jml_harga,0,',','.') ?></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>

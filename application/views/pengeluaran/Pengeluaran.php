@@ -3,8 +3,8 @@
         <div class="col-12">
             <div class="card mb-2">
                 <div class="card-header pb-2">
-                    <span class="h6">Detail Produksi</span>
-                    <a class="btn btn-sm btn-secondary" style="float: right;" href="<?= base_url('ProduksiController') ?>"><i class="fa fa-arrow-left"></i></a>
+                    <span class="h6">Data Pengeluaran Bahan</span>
+                    <a class="btn btn-sm btn-secondary mx-2" style="float: right;" href="<?= base_url('PengeluaranController/CetakPengeluaran') ?>"><i class="fa fa-print"></i></a>
                 </div>
                 <div class="card-body px-4 pb-3 pt-0">
                     <div class="table-responsive p-0">
@@ -35,3 +35,13 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable({
+                responsive: true,
+                fixedColumns: true,
+                fixedRows: true,
+                info: false,
+            });
+        });
+    </script>

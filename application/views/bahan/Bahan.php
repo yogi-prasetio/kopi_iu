@@ -43,7 +43,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                         <td><?= $no++ ?></td>
                                         <td><?= $item->nama_user ?></td>
                                         <td><?= $item->nama_bahan ?></td>
-                                        <td><?= $item->stok ?></td>
+                                        <td><?= number_format($item->stok,0,',','.') ?></td>
                                         <td><?= $item->satuan ?></td>
                                         <td><?= "Rp. ".number_format($item->harga,0,',','.') ?></td>
                                         <td><?= $item->LT ?></td>
@@ -70,3 +70,13 @@ if ($this->session->flashdata('flashgagal')) : ?>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable({
+                responsive: true,
+                fixedColumns: true,
+                fixedRows: true,
+                info: false,
+            });
+        });
+    </script>

@@ -30,8 +30,8 @@ class PesananController extends CI_Controller
         $condition = array('tbl_pesanan.id_supplier' => $id_supplier);
         $data['Pesanan'] = $this->PesananModel->FindPesananUserRequest($condition);
 
-        $cond = array('keterangan' => 'Pemesanan');
-        $data['jml_tindakan'] = count($this->PesananModel->FindPesananUserRequest($cond));
+        $cond = array('keterangan' => 'Pemesanan', 'id_supplier' => $this->session->userdata('id_user'));
+        $data['tindakan'] = count($this->PesananModel->FindPesananUserRequest($cond));
 
         $this->load->view('template/header', $data);
         $this->load->view('template/navbar', $data);
@@ -59,8 +59,11 @@ class PesananController extends CI_Controller
         $condition = array('tbl_pesanan_detail.id_pesanan' => $id_pesanan);
         $data['pesanan'] = $this->PesananModel->GetDetailPesananRequest($condition);
 
-        $conditi = array("keterangan" => "Diterima Supplier");
-        $data['jml_tindakan'] = count($this->PesananModel->FindPesananRequest($conditi));
+        $cond = array('keterangan' => 'Pemesanan', 'id_supplier' => $this->session->userdata('id_user'));
+        $data['tindakan'] = count($this->PesananModel->FindPesananUserRequest($cond));
+
+        $kondisi = array('keterangan' => 'Disetujui Supplier');
+        $data['jml_tindakan'] = count($this->PesananModel->FindPesananUserRequest($kondisi));
 
         $this->load->view('template/header', $data);
         $this->load->view('template/navbar', $data);
@@ -111,7 +114,7 @@ class PesananController extends CI_Controller
 
     public function DaftarTindakan(){
         $data['title'] = "Daftar Tindakan";
-        $condition = array("keterangan" => "Diterima Supplier");
+        $condition = array("keterangan" => "Disetujui Supplier");
         $data['Pesanan'] = $this->PesananModel->FindPesananRequest($condition);
         $data['jml_tindakan'] = count($data['Pesanan']);
 
@@ -130,7 +133,7 @@ class PesananController extends CI_Controller
 
         $payload = array(
             'tgl_penerimaan' => date('Y-m-d H:i:s'),
-            'keterangan' => 'Diterima Gudang', 
+            'keterangan' => 'Diterima', 
             'status' => 1
         );
         $cond = array("id_pesanan" => $id_pesanan);
@@ -161,7 +164,7 @@ class PesananController extends CI_Controller
 
     public function Accept($id_pesanan){
         $condition = array('id_pesanan' => $id_pesanan);
-        $payload = array('keterangan' => 'Diterima Supplier');
+        $payload = array('keterangan' => 'Disetujui Supplier');
         $result = $this->PesananModel->UpdatePesananRequest($condition, $payload);
 
         if($result){    
@@ -185,23 +188,52 @@ class PesananController extends CI_Controller
         }   
     }
 
+    public function AcceptAll(){
+        $condition = array('keterangan' => 'Pemesanan', 'id_supplier' => $this->session->userdata('id_user'));
+        $payload = array('keterangan' => 'Disetujui Supplier');
+        $result = $this->PesananModel->UpdatePesananRequest($condition, $payload);
+
+        if($result){    
+            $this->session->set_flashdata('flashdata','Data Pesanan berhasil disetujui semua!');
+            redirect('PesananController/Pesanan/'.$_SESSION["id_user"]);
+        } else {
+            $this->session->set_flashdata('flashgagal', 'Terdapat kesalahan');
+        }
+    }
+
+    public function RejectAll(){
+        $condition = array('keterangan' => 'Pemesanan', 'id_supplier' => $this->session->userdata('id_user'));
+        $payload = array('keterangan' => 'Ditolak Supplier', 'status' => 0);
+        $result = $this->PesananModel->UpdatePesananRequest($condition, $payload);
+
+        if($result){    
+            $this->session->set_flashdata('flashdata','Data Pesanan telah ditolak semua!');
+            redirect('PesananController/Pesanan/'.$_SESSION["id_user"]);
+        } else {
+            $this->session->set_flashdata('flashgagal', 'Terdapat kesalahan');
+        }   
+    }
+
     public function CetakPesanan()
     {
-        $Pesanan = $this->PesananModel->GetPesananRequest();
+        $pesanan = $this->PesananModel->GetDetailPesanan();
 
         #setting judul laporan dan header tabel
         $judul = "DATA Pesanan BAKU";
         $subjudul = "KOPI IU";
         $header = array(
-            array("label"=>"NO", "length"=>10, "align"=>"C"),
-            array("label"=>"NAMA Pesanan", "length"=>50, "align"=>"C"),
-            array("label"=>"STOK", "length"=>45, "align"=>"C"),
-            array("label"=>"SATUAN", "length"=>35, "align"=>"C")
+            array("label"=>"NO", "length"=>7, "align"=>"C"),
+            array("label"=>"NAMA BAHAN", "length"=>30, "align"=>"C"),
+            array("label"=>"JUMLAH", "length"=>25, "align"=>"C"),
+            array("label"=>"BIAYA", "length"=>25, "align"=>"C"),
+            array("label"=>"TGL PESAN", "length"=>35, "align"=>"C"),
+            array("label"=>"TGL TERIMA", "length"=>35, "align"=>"C"),
+            array("label"=>"KETERANGAN", "length"=>40, "align"=>"C")
         );
 
         $pdf = new FPDF();
-        $pdf->SetTitle('Data Pesanan Baku', TRUE);
-        $pdf->SetMargins(20, 20, 20);
+        $pdf->SetTitle('Data Pesanan Bahan Baku', TRUE);
+        $pdf->SetMargins(7, 20, 7);
         $pdf->AddPage('P','A4', 0);
 
         #tampilkan judul laporan
@@ -214,7 +246,7 @@ class PesananController extends CI_Controller
         $pdf->Ln(10);
 
         #buat header tabel
-        $pdf->SetFont('Arial','B','12');
+        $pdf->SetFont('Arial','B','9');
         $pdf->SetFillColor(71, 89, 107);
         $pdf->SetTextColor(255);
         $pdf->SetDrawColor(128);
@@ -231,11 +263,14 @@ class PesananController extends CI_Controller
         $fill=false;
         $no=1;
         $i=0;
-        foreach ($Pesanan as $row) {
+        foreach ($pesanan as $row) {
             $pdf->Cell($header[$i]['length'], 8, $no++, 1,'0', $kolom['align'], $fill);
-            $pdf->Cell($header[$i+1]['length'], 8, $row->nama_Pesanan,1,'0', 'L', $fill);
-            $pdf->Cell($header[$i+2]['length'], 8, $row->stok,1,'0', $kolom['align'], $fill);
-            $pdf->Cell($header[$i+3]['length'], 8, $row->satuan,1,'0', $kolom['align'], $fill);
+            $pdf->Cell($header[$i+1]['length'], 8, $row->nama_bahan,1,'0', 'L', $fill);
+            $pdf->Cell($header[$i+2]['length'], 8, number_format($row->jml_bahan,0,',','.').' '.$row->satuan,1,'0', $kolom['align'], $fill);
+            $pdf->Cell($header[$i+3]['length'], 8, number_format($row->jml_harga,0,',','.'),1,'0', $kolom['align'], $fill);
+            $pdf->Cell($header[$i+4]['length'], 8, $row->tgl_pesanan,1,'0', $kolom['align'], $fill);
+            $pdf->Cell($header[$i+5]['length'], 8, $row->tgl_penerimaan,1,'0', $kolom['align'], $fill);
+            $pdf->Cell($header[$i+6]['length'], 8, $row->keterangan,1,'0', $kolom['align'], $fill);
             $fill = !$fill;
             $pdf->Ln();
         }
@@ -263,7 +298,7 @@ class PesananController extends CI_Controller
             array("label"=>"JUMLAH", "length"=>30, "align"=>"C"),
             array("label"=>"SATUAN", "length"=>25, "align"=>"C"),
             array("label"=>"HARGA", "length"=>30, "align"=>"C"),
-            array("label"=>"JUMLAH", "length"=>45, "align"=>"C")
+            array("label"=>"TOTAL HARGA", "length"=>45, "align"=>"C")
         );
 
         $pdf = new FPDF();
@@ -333,7 +368,7 @@ class PesananController extends CI_Controller
         for($i=0; $i<count($pesanan); $i++) {
             $pdf->Cell($header[$no]['length'], 15, 1+$i, 1,'0', $kolom['align'], $fill);
             $pdf->Cell($header[$no+1]['length'], 15, $pesanan[$i]->nama_bahan,1,'0', 'L', $fill);
-            $pdf->Cell($header[$no+2]['length'], 15, $pesanan[$i]->jml_bahan,1,'0', $kolom['align'], $fill);
+            $pdf->Cell($header[$no+2]['length'], 15, number_format($pesanan[$i]->jml_bahan,0,',','.'),1,'0', $kolom['align'], $fill);
             $pdf->Cell($header[$no+3]['length'], 15, $pesanan[$i]->satuan,1,'0', $kolom['align'], $fill);
             $pdf->Cell($header[$no+4]['length'], 15, "Rp. ".number_format($pesanan[$i]->harga,0,',','.'),1,'0', $kolom['align'], $fill);
             $pdf->Cell($header[$no+5]['length'], 15, "Rp. ".number_format($pesanan[$i]->jml_harga,0,',','.'),1,'0', $kolom['align'], $fill);

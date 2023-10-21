@@ -84,12 +84,12 @@
 <!--   Core JS Files   -->
 <script src="<?= base_url() ?>assets/js/core/popper.min.js"></script>
 <script src="<?= base_url() ?>assets/js/core/bootstrap.min.js"></script>
+<!-- <script src="<?= base_url() ?>assets/js/core/bootstrap.bundle.min.js"></script> -->
 <script src="<?= base_url() ?>assets/js/plugins/perfect-scrollbar.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugins/smooth-scrollbar.min.js"></script>
 <script src="<?= base_url() ?>assets/js/plugins/chartjs.min.js"></script>
 
 <!-- Plugins Additional -->
-<script src="<?= base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
 <script src="<?= base_url() ?>assets/plugins/DataTables/datatables.min.js"></script>
 <script src="<?= base_url() ?>assets/plugins/sweetalert2/sweetalert2.all.min.js"></script>
 <!-- Bootstrap -->
@@ -99,26 +99,19 @@
 <!-- jQuery Mapael -->
 <script src="<?= base_url(); ?>assets/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
 
+<!-- Font Awesome -->
+<script src="<?= base_url() ?>assets/plugins/fontawesome/js/all.js"></script>
+<script src="<?= base_url() ?>assets/plugins/fontawesome/js/all.min.js"></script>
+
 <!-- Github buttons -->
-<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script src="<?= base_url() ?>assets/js/button.js"></script>
+<!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
 <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
 <script src="<?= base_url() ?>assets/js/argon-dashboard.min.js?v=2.0.4"></script>
 
 <script>
-    $(document).ready(function() {
-        $('#data-table').DataTable({
-            responsive: true,
-            fixedColumns: true,
-            fixedRows: true,
-        });
-
-        
-
-        
-    });
-</script>
-<script>
-    var ctx1 = document.getElementById("chart-line").getContext("2d");
+    // var ctx1 = document.getElementById("chart-line").getContext("2d");
+    var ctx1 = '';
 
     var gradientStroke1 = ctx1.createLinearGradient(0, 230, 0, 50);
 
@@ -128,9 +121,9 @@
     new Chart(ctx1, {
         type: "line",
         data: {
-            labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
             datasets: [{
-                label: "Mobile apps",
+                label: "Transaction",
                 tension: 0.4,
                 borderWidth: 0,
                 pointRadius: 0,
@@ -166,8 +159,8 @@
                     },
                     ticks: {
                         display: true,
-                        padding: 10,
-                        color: '#fbfbfb',
+                        padding: 5,
+                        color: '#000099',
                         font: {
                             size: 11,
                             family: "Open Sans",
@@ -186,7 +179,7 @@
                     },
                     ticks: {
                         display: true,
-                        color: '#ccc',
+                        color: '#000099',
                         padding: 20,
                         font: {
                             size: 11,
@@ -269,7 +262,7 @@ $('#btn-confirm').on('click', function(e) {
     Swal.fire({
       title: 'Konfirmasi Pesanan',
       text: "Apakah Anda yakin akan melakukan pesanan?",
-      icon: 'warning',
+      icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',

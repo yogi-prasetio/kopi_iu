@@ -1,9 +1,9 @@
 <?php
 
-class LoginModel extends CI_Model
+class Authentication extends CI_Model
 {
 
-    function LoginRequest($username, $password)
+    function SignInRequest($username, $password)
     {
         $this->db->select('*');
         $this->db->from('tbl_user');
@@ -12,5 +12,10 @@ class LoginModel extends CI_Model
         $this->db->limit(1);
         $query = $this->db->get();
         return ($query->num_rows() > 0) ? $query->row() : FALSE;
+    }
+
+    function SignUpRequest($username, $password)
+    {
+        return $this->db->insert('tbl_user', $payload);
     }
 }

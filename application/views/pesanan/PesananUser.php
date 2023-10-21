@@ -8,8 +8,15 @@ if ($this->session->flashdata('flashgagal')) : ?>
     <div class="row">
         <div class="col-12">
             <div class="card mb-2">
-                <div class="card-header pb-2">
-                    <span class="h6">Tabel Pesanan</span>                    
+                <div class="card-header pb-2 mb-2">
+                    <span class="h6">Tabel Pesanan</span>
+                    <a href="<?= base_url('PesananController/RejectAll')?>" class="btn btn-danger btn-sm mr-2 mx-2 float-end" title='Tolak Semua'>
+                        <i class="fas fa-times text-bold mx-2"></i> Tolak Semua
+                    </a>
+                    &nbsp
+                    <a href="<?= base_url('PesananController/AcceptAll')?>" class="btn btn-success btn-sm float-end" title='Setujui Semua'>
+                        <i class="fas fa-check text-bold mx-2"></i> Setujui Semua
+                    </a>                    
                 </div>
                 <div class="card-body px-4 pb-3 pt-0">
                     <div class="table-responsive p-0">
@@ -30,7 +37,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                     <tr class="text-sm">
                                         <td><?= $no++ ?></td>
                                         <td><?= $item->tgl_pesanan ?></td>
-                                        <td><?= $item->total_biaya ?></td>
+                                        <td><?= "Rp.".number_format($item->total_biaya,0,',','.') ?></td>
                                         <td>
                                             <a href="<?= base_url("PesananController/DetailPesanan/$item->id_pesanan"); ?>" class="badge badge-sm bg-gradient-success" data-toggle="tooltip" data-placement="top" title="Detail">Lihat Detail</a>
                                         </td>
@@ -38,13 +45,13 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                             <?php
                                             if($item->keterangan == "Pemesanan"){
                                                 ?>
-                                                <a href="<?= base_url("PesananController/Accept/$item->id_pesanan"); ?>" class="badge badge-sm bg-success" data-toggle="tooltip" data-placement="top" title="Konfirmasi"><i class="fa fa-check"></i></a>
-                                                <a href="<?= base_url("PesananController/Reject/$item->id_pesanan"); ?>" class="badge badge-sm bg-danger" data-toggle="tooltip" data-placement="top" title="Totlak"><i class="fa fa-times"></i></a>
+                                                <a href="<?= base_url("PesananController/Accept/$item->id_pesanan"); ?>" class="badge badge-sm bg-success" data-toggle="tooltip" data-placement="top" title="Terima"><i class="fa fa-check"></i></a>
+                                                <a href="<?= base_url("PesananController/Reject/$item->id_pesanan"); ?>" class="badge badge-sm bg-danger" data-toggle="tooltip" data-placement="top" title="Tolak"><i class="fa fa-times"></i></a>
                                                 <?php 
                                             } else {
-                                                if($item->status == true) { 
+                                                if($item->keterangan == "Ditolak Supplier") { 
                                                     echo "<span class='badge badge-sm bg-gradient-danger'>Ditolak</apan>";
-                                                } else {
+                                                } else if($item->keterangan == "Disetujui Supplier" || $item->status == 1){
                                                     echo "<span class='badge badge-sm bg-gradient-success'>Disetujui</apan>";
                                                 }
                                             } 
@@ -59,3 +66,13 @@ if ($this->session->flashdata('flashgagal')) : ?>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable({
+                responsive: true,
+                fixedColumns: true,
+                fixedRows: true,
+                info: false,
+            });
+        });
+    </script>

@@ -30,7 +30,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                     <tr class="text-sm">
                                         <td><?= $no++ ?></td>
                                         <td><?= $item->tgl_pesanan ?></td>
-                                        <td><?= $item->total_biaya ?></td>
+                                        <td><?= "Rp.".number_format($item->total_biaya,0,',','.') ?></td>
                                         <td>
                                             <a href="<?= base_url("PesananController/DetailPesanan/$item->id_pesanan"); ?>" class="badge badge-sm bg-gradient-success" data-toggle="tooltip" data-placement="top" title="Detail">Lihat Detail</a>
                                         </td>
@@ -47,3 +47,13 @@ if ($this->session->flashdata('flashgagal')) : ?>
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#data-table').DataTable({
+                responsive: true,
+                fixedColumns: true,
+                fixedRows: true,
+                info: false,
+            });
+        });
+    </script>
