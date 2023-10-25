@@ -90,7 +90,6 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                 <tr class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">
                                     <th>No</th>
                                     <th>Nama Bahan</th>
-                                    <th>Bulan</th>
                                     <th>POQ</th>                                    
                                     <th>Frequensi</th>
                                 </tr>
