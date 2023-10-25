@@ -41,6 +41,9 @@ class BahanController extends CI_Controller
     public function UpdateBahan($id_bahan)
     {
         $data['title'] = "Edit Bahan";
+        $condition = array("keterangan" => "Diterima Supplier");
+        $data['Pesanan'] = $this->PesananModel->FindPesananRequest($condition);
+        $data['jml_tindakan'] = count($data['Pesanan']);
 
         $condition = array('id_bahan' => $id_bahan);
         $data['bahan'] = $this->BahanModel->FindBahanRequest($condition);
