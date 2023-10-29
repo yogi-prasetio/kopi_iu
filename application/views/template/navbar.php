@@ -95,7 +95,7 @@
                 <li class="nav-item">
                     <a class="nav-link <?php if($title == 'Data Transaksi') echo 'active'?>" href="<?= base_url('TransaksiController') ?>">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="ni ni-cart text-warning text-sm opacity-10"></i>
+                            <i class="fas fa-dollar-sign text-warning text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Transaksi</span>
                     </a>
@@ -119,7 +119,7 @@
                 <li class="nav-item">
                     <a class="nav-link <?php if($title == 'Data Pesanan') echo 'active'?>" href="<?= base_url('PesananController') ?>">
                         <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                            <i class="fas fa-fw fa-cart-arrow-down text-warning text-sm opacity-10"></i>
+                            <i class="ni ni-cart text-warning text-sm opacity-10"></i>
                         </div>
                         <span class="nav-link-text ms-1">Pesanan</span>
                     </a>

@@ -16,7 +16,8 @@ class BahanController extends CI_Controller
     {
         $data['title'] = "Data Bahan";
         $data['bahan'] = $this->BahanModel->GetBahanRequest();
-        $condition = array("keterangan" => "Diterima Supplier");
+
+        $condition = array("keterangan" => "Disetujui Supplier");
         $data['Pesanan'] = $this->PesananModel->FindPesananRequest($condition);
         $data['jml_tindakan'] = count($data['Pesanan']);
 
@@ -41,7 +42,7 @@ class BahanController extends CI_Controller
     public function UpdateBahan($id_bahan)
     {
         $data['title'] = "Edit Bahan";
-        $condition = array("keterangan" => "Diterima Supplier");
+        $condition = array("keterangan" => "Disetujui Supplier");
         $data['Pesanan'] = $this->PesananModel->FindPesananRequest($condition);
         $data['jml_tindakan'] = count($data['Pesanan']);
 

@@ -154,7 +154,7 @@ class PesananController extends CI_Controller
         }
 
         if($result){    
-            $this->session->set_flashdata('flashdata','Data Bahan berhasil diterima!');
+            $this->session->set_flashdata('flashdata','Data Bahan telah diterima!');
             redirect('PesananController/DaftarTindakan');
         } else {
             $this->session->set_flashdata('flashgagal', 'Data Bahan gagal diterima!');

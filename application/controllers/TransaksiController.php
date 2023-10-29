@@ -172,7 +172,7 @@ class TransaksiController extends CI_Controller
         $subjudul = "KOPI IU";
         $header = array(
             array("label"=>"NO", "length"=>10, "align"=>"C"),
-            array("label"=>"NAMA PRODUK", "length"=>50, "align"=>"C"),
+            array("label"=>"NAMA USER", "length"=>50, "align"=>"C"),
             array("label"=>"JUMLAH", "length"=>35, "align"=>"C"),
             array("label"=>"TOTAL HARGA", "length"=>40, "align"=>"C"),
             array("label"=>"TGL TRANSAKSI", "length"=>40, "align"=>"C")
@@ -242,7 +242,7 @@ class TransaksiController extends CI_Controller
         );
 
         $pdf = new FPDF();
-        $pdf->SetTitle('Data Pengaluaran Bahan Baku', TRUE);
+        $pdf->SetTitle('Data Pengeluaran Bahan Baku', TRUE);
         $pdf->SetMargins(20, 20, 20);
         $pdf->AddPage('P','A4', 0);
 
@@ -291,10 +291,12 @@ class TransaksiController extends CI_Controller
 
     public function Cetak()
     {
-        $Transaksi = $this->TransaksiModel->GetTransaksiRequest();
+        $condition = array('tbl_transaksi_detail.id_transaksi' => $id_transaksi);
+
+        $Transaksi = $this->TransaksiModel->FindDetailTransaksiRequest($condition);
 
         #setting judul laporan dan header tabel
-        $judul = "DATA Transaksi";
+        $judul = "DATA DETAIL TRANSAKSI";
         $subjudul = "KOPI IU";
         $header = array(
             array("label"=>"NO", "length"=>10, "align"=>"C"),

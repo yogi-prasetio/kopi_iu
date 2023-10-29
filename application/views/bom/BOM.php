@@ -13,7 +13,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                     <?php if($this->session->userdata('role')=='Admin'){ ?>
                         <a class="btn btn-sm btn-primary" style="float: right;" href="<?= base_url('BOMController/AddBOM') ?>"><i class="fa fa-plus"></i></a>
                     <?php } ?>
-                    <a class="btn btn-sm btn-secondary mx-2" style="float: right;" href="<?= base_url('BOMController/CetakBOM') ?>"><i class="fa fa-print"></i></a>
+                    <a class="btn btn-sm btn-secondary mx-2 <?= $BOM == null ? 'disabled' : ''?>" style="float: right;" href="<?= base_url('BOMController/CetakBOM') ?>"><i class="fa fa-print"></i></a>
                 </div>
                 <div class="card-body px-4 pb-3 pt-0">
                     <table class="table align-items-center mb-0 pt-0" id="data-table-bom">
@@ -61,18 +61,31 @@ if ($this->session->flashdata('flashgagal')) : ?>
 </div>
 <script>
     $(document).ready(function() {
-        $('#data-table-bom').DataTable({
+
+        var table = $('#data-table-bom').DataTable({
             responsive: true,
             fixedColumns: true,
             fixedRows: true,
+            order: [[1, 'asc']],
             columnDefs: [
-                {
-                    render: function(data, type, full, meta){
-                        return "<div class='text-wrap'>" + data + "</div>";
-                    },
-                    targets: 3
-                }
-            ]
+            {
+                targets: [0, -1],
+                searchable: false,
+                orderable: false,
+            },
+            {
+                render: function(data, type, full, meta){
+                    return "<div class='text-wrap'>" + data + "</div>";
+                },
+                targets: 3
+            }
+            ],
+        });
+        table.on('draw.dt', function () {
+            var PageInfo = $('#data-table-bon').DataTable().page.info();
+            table.column(0, { page: 'current' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1 + PageInfo.start;
+            });
         });
     });
 </script>

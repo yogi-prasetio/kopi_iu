@@ -44,8 +44,6 @@
                                 </label>
                                 <select name="satuan" class="form-select" <?= $_SESSION['role']=='Gudang' ? 'readonly' : '' ?>>
                                     <option disabled>-- Pilih Satuan --</option>
-                                    <option <?php if($row->satuan == 'Kg') echo 'selected'; ?> value="Kg">Kg</option>
-                                    <option <?php if($row->satuan == 'Liter') echo 'selected'; ?> value="Liter">Liter</option>
                                     <option <?php if($row->satuan == 'gram') echo 'selected'; ?> value="gram">gram</option>
                                     <option <?php if($row->satuan == 'ml') echo 'selected'; ?> value="ml">ml</option>
                                 </select>

@@ -14,11 +14,12 @@ if ($this->session->flashdata('flashgagal')) : ?>
                     <?php if($this->session->userdata('role')=='Admin'){ ?>
                         <a class="btn btn-sm btn-primary text-end" style="float: right;" href="<?= base_url('BahanController/AddBahan') ?>"><i class="fa fa-plus"></i></a>
                     <?php } ?>
-                    <a class="btn btn-sm btn-secondary mx-2" style="float: right;" href="<?= base_url('BahanController/CetakBahan') ?>"><i class="fa fa-print"></i></a>
+                    <a class="btn btn-sm btn-secondary mx-2 <?= $bahan == null ? 'disabled' : ''?>" style="float: right;" href="<?= base_url('BahanController/CetakBahan') ?>">
+                        <i class="fa fa-print"></i></a>
                 </div>
                 <div class="card-body px-4 pb-3 pt-0">
                     <div class="table-responsive p-0">
-                        <table class="table align-items-center mb-0" id="data-table">
+                        <table class="table align-items-center mb-0" id="data-table-bahan">
                             <thead>
                                 <tr class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-7">
                                     <th>No</th>
@@ -46,7 +47,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                         <td><?= number_format($item->stok,0,',','.') ?></td>
                                         <td><?= $item->satuan ?></td>
                                         <td><?= "Rp. ".number_format($item->harga,0,',','.') ?></td>
-                                        <td><?= $item->LT ?></td>
+                                        <td><?= $item->LT ?> hari</td>
                                         <?php
                                         if($this->session->userdata("role") == "Gudang"){
                                             ?>
@@ -72,11 +73,24 @@ if ($this->session->flashdata('flashgagal')) : ?>
     </div>
     <script>
         $(document).ready(function() {
-            $('#data-table').DataTable({
+            var table = $('#data-table-bahan').DataTable({
                 responsive: true,
                 fixedColumns: true,
                 fixedRows: true,
                 info: false,
+                columnDefs: [
+                {
+                    targets: [0, -1],
+                    searchable: false,
+                    orderable: false,
+                },
+                ],
+            });
+            table.on('draw.dt', function () {
+                var PageInfo = $('#data-table-bahan').DataTable().page.info();
+                table.column(0, { page: 'current' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1 + PageInfo.start;
+                });
             });
         });
     </script>

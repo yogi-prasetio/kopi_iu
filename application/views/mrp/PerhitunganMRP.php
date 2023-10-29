@@ -12,7 +12,6 @@ if ($this->session->flashdata('flashgagal')) : ?>
                     <div class="card-header pb-2">
                         <span class="h6">Material Requirement Planning</span>
                         <button type="submit" class="btn btn-sm btn-success mx-2" id="btn-proses" style="float: right;" >PROSES</i></button>
-                        <a class="btn btn-sm btn-secondary mx-2" style="float: right;" href="<?= base_url('MRPController/CetakMRP') ?>"><i class="fa fa-print"></i></a>
                     </div>
                     <div class="card-body px-4 pb-3 pt-0">
                         <div class="row col-12 mb-3 mx-2 mr-2">
@@ -35,7 +34,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                         <th>Id Bahan</th>
                                         <th>Nama Bahan</th>
                                         <th>Bahan Keluar</th>
-                                        <th>Bulan</th>                                    
+                                        <th>Waktu</th>
                                         <th>Lead Time</th>
                                     </tr>
                                 </thead>
@@ -58,12 +57,11 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                                 <?= $item->jumlah." ".$item->satuan ?>
                                             </td>
                                             <td id="tanggal">
-                                                <input type="hidden" name="tanggal" value="<?= $item->tgl_pengeluaran ?>" required>
-                                                <?= $item->tgl_pengeluaran ?>
+                                                1 Tahun
                                             </td>
                                             <td id="lead_time">
                                                 <input type="hidden" name="lead_time" value="<?= $item->LT ?>" required>
-                                                <?= $item->LT ?>
+                                                <?= $item->LT ?> hari
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -81,7 +79,9 @@ if ($this->session->flashdata('flashgagal')) : ?>
             <div class="card mb-2">
                 <div class="card-header pb-2">
                     <span class="h6">Data MRP</span>
-                    <a class="btn btn-sm btn-secondary mx-2" style="float: right;" href="<?= base_url('ProduksiController/CetakPengeluaran') ?>"><i class="fa fa-print"></i></a>
+                    <a class="btn btn-sm btn-secondary mx-2 <?= $mrp == null ? 'disabled' : ''?>" style="float: right;" href="<?= base_url('MRPController/CetakMRP') ?>">
+                        <i class="fa fa-print"></i>
+                    </a>
                 </div>
                 <div class="card-body px-4 pb-3 pt-0">
                     <div class="table-responsive p-0">
@@ -104,10 +104,9 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                         <td><?= $item->poq ?></td>
                                         <td>
                                             <?php echo round($item->frequensi/1000)." "; 
-                                                if($item->satuan == "ml") { echo 'Liter'; } 
-                                                elseif ($item->satuan == "gram") { echo 'Kg'; }
+                                            if($item->satuan == "ml") { echo 'Liter'; } 
+                                            elseif ($item->satuan == "gram") { echo 'Kg'; }
                                             ?>
-                                                
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -141,6 +140,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                 info: false,
             })
 
+            var btnProcess = document.getElementById("btn-proses");
             // var table_keluar = $('#data-pengeluaran').DataTable();
             $.fn.dataTable.ext.search.push(
                 function (settings, data, dataIndex) {
@@ -150,15 +150,18 @@ if ($this->session->flashdata('flashgagal')) : ?>
                     if (bahan.includes(select)) {
                     // alert(bahan[0]);
                         // console.log('ada');
+                        // $("button").removeClass('disabled');
+                        // $("#btn-proses").addClass('enabled');
                         var id_bahan = data[0];
                         document.getElementById("id_bahan").value = id_bahan.toString();
                         return true;
                     } else {
                         // console.log('tidak ada');
+                        // $("#btn-proses").addClass('disabled');
                         return false;
                     }
                 }
-            );
+                );
 
             $("#bahan-mrp").change(function (e) {
                 table_keluar.draw();
@@ -166,10 +169,6 @@ if ($this->session->flashdata('flashgagal')) : ?>
 
             table_keluar.draw();
 
-            $("#btn-proses").addClass('disabled');
-
-            $("#bahan-mrp").change(function() {
-                $("#btn-proses").removeClass('disabled');
-            })
+            // $("#btn-proses").addClass('disabled');
         })
     </script>

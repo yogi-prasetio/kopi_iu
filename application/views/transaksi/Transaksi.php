@@ -13,7 +13,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                     <?php if($this->session->userdata('role')=='Admin'){ ?>
                         <a class="btn btn-sm btn-primary" style="float: right;" href="<?= base_url('TransaksiController/AddTransaksi') ?>"><i class="fa fa-plus"></i></a>
                     <?php } ?>
-                    <a class="btn btn-sm btn-secondary mx-2" style="float: right;" href="<?= base_url('TransaksiController/CetakTransaksi') ?>"><i class="fa fa-print"></i></a>
+                    <a class="btn btn-sm btn-secondary mx-2 <?= $Transaksi == null ? 'disabled' : ''?>" style="float: right;" href="<?= base_url('TransaksiController/CetakTransaksi') ?>"><i class="fa fa-print"></i></a>
                 </div>
                 <div class="card-body px-4 pb-3 pt-0">
                     <div class="table-responsive p-0">
@@ -62,11 +62,25 @@ if ($this->session->flashdata('flashgagal')) : ?>
     </div>
     <script>
         $(document).ready(function() {
-            $('#data-table').DataTable({
+            var table = $('#data-table').DataTable({
                 responsive: true,
                 fixedColumns: true,
                 fixedRows: true,
                 info: false,
+                order: [[1, 'asc']],
+                columnDefs: [
+                {
+                    targets: [0, -1],
+                    searchable: false,
+                    orderable: false,
+                },
+                ]
+            });
+            table.on('draw.dt', function () {
+                var PageInfo = $('#data-table').DataTable().page.info();
+                table.column(0, { page: 'current' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1 + PageInfo.start;
+                });
             });
         });
     </script>

@@ -158,7 +158,7 @@
     <script type="text/javascript">
         var data_bhn = [];
         $(document).ready(function(){           
-            
+
             $(".btn_tambah").click(function () {
                 $("#tambah_bahan").modal('show');
             });          
@@ -228,11 +228,23 @@
                     visible: false,
                     searchable: true
                 },
+                {
+                    targets: [0, -1],
+                    searchable: false,
+                    orderable: false,
+                }
                 ],
                 responsive: true,
                 fixedColumns: true,
                 fixedRows: true,
                 searching: true,
+            });
+
+            table.on('draw.dt', function () {
+                var PageInfo = $('#data-bahan').DataTable().page.info();
+                table.column(0, { page: 'current' }).nodes().each(function (cell, i) {
+                    cell.innerHTML = i + 1 + PageInfo.start;
+                });
             });
 
         // var table = $('#data-bahan').DataTable();
@@ -255,78 +267,78 @@
             
         });
 
-        function setId(){
-            var id_supplier = document.getElementById("supplier_filter").value;
-            console.log(id_supplier);
-            document.getElementById("id_supplier").value = id_supplier;
+function setId(){
+    var id_supplier = document.getElementById("supplier_filter").value;
+    console.log(id_supplier);
+    document.getElementById("id_supplier").value = id_supplier;
+}
+
+function cek_bahan(id, parent) {
+    for(var i=0; i<data_bhn.length; i++){
+        if(id == data_bhn[i].id_bahan && parent == data_bhn[i].parent){
+            return i;
         }
+    }
+    return -1;
+}
 
-        function cek_bahan(id, parent) {
-            for(var i=0; i<data_bhn.length; i++){
-                if(id == data_bhn[i].id_bahan && parent == data_bhn[i].parent){
-                    return i;
-                }
-            }
-            return -1;
-        }
-
-        function pilih_bahan(id, nama, satuan, harga){
-            console.log(id+" "+nama+" "+satuan+" "+harga);
-            $("#tambah_bahan").modal('hide');
-            $("#id_bahan_inp").val(id);
-            $("#nama_bahan_inp").val(nama);
-            $("#satuan_bahan_inp").val(satuan);
-            $("#harga_bahan_inp").val(harga);
-            $("#st-add-satuan").html(satuan);
-            $("#detail_bahan").modal('show');
-            $("#jumlah_bahan_inp").val('');
-        }
+function pilih_bahan(id, nama, satuan, harga){
+    console.log(id+" "+nama+" "+satuan+" "+harga);
+    $("#tambah_bahan").modal('hide');
+    $("#id_bahan_inp").val(id);
+    $("#nama_bahan_inp").val(nama);
+    $("#satuan_bahan_inp").val(satuan);
+    $("#harga_bahan_inp").val(harga);
+    $("#st-add-satuan").html(satuan);
+    $("#detail_bahan").modal('show');
+    $("#jumlah_bahan_inp").val('');
+}
 
 
-        function tambah_bahan(data_bhn){
+function tambah_bahan(data_bhn){
             /*id_bahan_class*/
-            var frm = '';
-            $(".tbody_bahan").html(" ");
-            for(var i=0; i<data_bhn.length; i++){
-                frm += gen_data_bahan(data_bhn[i], i);
-            }
-            $(".tbody_bahan").append(frm);
-            var element = document.getElementById("btn-confirm");
-            element.classList.remove("disabled");
-        }
+    var frm = '';
+    $(".tbody_bahan").html(" ");
+    for(var i=0; i<data_bhn.length; i++){
+        frm += gen_data_bahan(data_bhn[i], i);
+    }
+    $(".tbody_bahan").append(frm);
+    var element = document.getElementById("btn-confirm");
+    element.classList.remove("disabled");
+}
 
-        function gen_data_bahan(data_bhn, idx){
-            var ret = '';
+function gen_data_bahan(data_bhn, idx){
+    var ret = '';
             // var no = 0;
-            ret += '<tr id="bhn_'+idx+'">';
+    ret += '<tr id="bhn_'+idx+'">';
             // ret += '<td>'+(no+1)+'</td>';
-            ret += '<td>'+data_bhn.nama_bahan;
-            ret += '<input type="hidden" id="idbhn_'+idx+'" class="form-control id_bahan_class" name="id_bahan[]" value="'+data_bhn.id_bahan+'">';
-            ret += '</td>';
-            ret += '<td>'+data_bhn.jumlah_bahan+" "+data_bhn.satuan_bahan;
-            ret += '<input type="hidden" id="jmlbhn_'+idx+'" class="form-control" name="jumlah_bahan[]" value="'+data_bhn.jumlah_bahan+'">';
-            ret += '</td>';
-            ret += '<td>'+data_bhn.total_biaya;
-            ret += '<input type="hidden" id="total_'+idx+'" class="form-control" name="total_biaya[]" value="'+data_bhn.total_biaya+'">';
-            ret += '</td>';
-            ret += '<td>';
-            ret += '<button type="button" onclick="hapus_bahan('+idx+')" class="btn btn-sm btn-danger btn_hapus_bahan" data-id="'+data_bhn.id_bahan+'" data-toggle="tooltip" data-placement="top" title="Hapus">';
-            ret += '<i class="fa fa-trash"></i>';
-            ret += '</button>';
-            ret += '</td>';
-            ret += '</tr>';
-            return ret;
-        }
+    ret += '<td>'+data_bhn.nama_bahan;
+    ret += '<input type="hidden" id="idbhn_'+idx+'" class="form-control id_bahan_class" name="id_bahan[]" value="'+data_bhn.id_bahan+'">';
+    ret += '</td>';
+    ret += '<td>'+data_bhn.jumlah_bahan+" "+data_bhn.satuan_bahan;
+    ret += '<input type="hidden" id="jmlbhn_'+idx+'" class="form-control" name="jumlah_bahan[]" value="'+data_bhn.jumlah_bahan+'">';
+    ret += '</td>';
+    ret += '<td>'+data_bhn.total_biaya;
+    ret += '<input type="hidden" id="total_'+idx+'" class="form-control" name="total_biaya[]" value="'+data_bhn.total_biaya+'">';
+    ret += '</td>';
+    ret += '<td>';
+    ret += '<button type="button" onclick="hapus_bahan('+idx+')" class="btn btn-sm btn-danger btn_hapus_bahan" data-id="'+data_bhn.id_bahan+'" data-toggle="tooltip" data-placement="top" title="Hapus">';
+    ret += '<i class="fa fa-trash"></i>';
+    ret += '</button>';
+    ret += '</td>';
+    ret += '</tr>';
+    return ret;
+}
 
-        function hapus_bahan(id) {
-            $("#bhn_"+id).remove();
-            data_bhn.splice(id, 1);
-            tambah_bahan(data_bhn);
+function hapus_bahan(id) {
+    $("#bhn_"+id).remove();
+    data_bhn.splice(id, 1);
+    tambah_bahan(data_bhn);
 
-            if(data_bhn.length == 0){
-                var element = document.getElementById("btn-confirm");
-                element.classList.add("disabled");
-                document.getElementById("supplier_filter").disabled = false;
-            }
-        }
-    </script>
+    if(data_bhn.length == 0){
+        var element = document.getElementById("btn-confirm");
+        element.classList.add("disabled");
+        document.getElementById("supplier_filter").disabled = false;
+    }
+}
+</script>
