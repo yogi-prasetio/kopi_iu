@@ -27,6 +27,45 @@ class MRPController extends CI_Controller
         $this->load->view('template/footer');
     }
 
+    public function ShowProcess(){
+        $id_bahan = $this->input->post("id_bahan");
+        $nama_bahan = $this->input->post("nama_bahan");
+        $jumlah_pakai = $this->input->post("jumlah");
+
+        $condition = array("id_bahan" => $id_bahan);
+        $bahan = $this->BahanModel->FindBahanRequest($condition);
+
+        //Cek MRP Sudah Ada Atau Belum
+        $kondisi = array("id_bahan" => $id_bahan);
+        $check = $this->MRPModel->FindMRPRequest($kondisi);       
+
+        $jumlah_biaya = $bahan[0]->persediaan*$bahan[0]->harga;
+        $pesan = 0.1 * $jumlah_biaya;
+        $transport = 0.015 * $jumlah_biaya;
+        $bongkar = 0.0125 * $jumlah_biaya;
+
+        $S = $pesan + $transport + $bongkar;
+        $D = $jumlah_pakai;
+        $H = (0.1 * $bahan[0]->harga);
+        $DH = $D*$H;
+
+        $POQ = sqrt((2 * $S) / ($D * $H));
+
+        $kuantitas = round($POQ) * 12;
+
+        $result = array(
+            "D" => $D,
+            "S" => $S,
+            "H" => $H,
+            "persen" => "0.1",
+            "c" => $bahan[0]->harga,
+        );    
+
+    //add the header here
+        header('Content-Type: application/json');
+        echo json_encode( $result );
+    }
+
     public function Proses(){
         $id_bahan = $this->input->post("id_bahan");
         $nama_bahan = $this->input->post("nama_bahan");

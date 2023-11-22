@@ -11,7 +11,9 @@ if ($this->session->flashdata('flashgagal')) : ?>
                 <div class="card-header pb-2">
                     <span class="h6">Tabel Transaksi</span>
                     <?php if($this->session->userdata('role')=='Admin'){ ?>
-                        <a class="btn btn-sm btn-primary" style="float: right;" href="<?= base_url('TransaksiController/AddTransaksi') ?>"><i class="fa fa-plus"></i></a>
+                        <a class="btn btn-sm btn-primary <?= $stok === false ? 'disabled' : '' ?>" style="float: right;" href="<?= base_url('TransaksiController/AddTransaksi') ?>">
+                            <i class="fa fa-plus"></i>
+                        </a>
                     <?php } ?>
                     <a class="btn btn-sm btn-secondary mx-2 <?= $Transaksi == null ? 'disabled' : ''?>" style="float: right;" href="<?= base_url('TransaksiController/CetakTransaksi') ?>"><i class="fa fa-print"></i></a>
                 </div>
@@ -56,6 +58,13 @@ if ($this->session->flashdata('flashgagal')) : ?>
                             </tbody>
                         </table>
                     </div>
+                    <?php
+                        if($stok == false) {
+                            echo '<div class="alert alert-warning text-white mt-3 text-lg" role="alert">
+                                Mohon maaf Anda tidak bisa melakukan transaksi dikarenakan beberapa bahan yang digunakan akan habis!
+                                </div>';
+                        }
+                    ?>
                 </div>
             </div>
         </div>

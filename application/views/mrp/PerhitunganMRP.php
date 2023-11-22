@@ -45,15 +45,15 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                         ?>
                                         <tr class="text-sm">
                                             <td id="id">
-                                                <input type="hidden" name="id" value="<?= $item->id_bahan ?>" required>
+                                                <input type="hidden" name="id" id="idBahan" value="<?= $item->id_bahan ?>" required>
                                                 <?= $item->id_bahan ?>                                                
                                             </td>
                                             <td id="name">
-                                                <input type="hidden" name="nama_bahan" value="<?= $item->nama_bahan ?>" required>
+                                                <input type="hidden" name="nama_bahan" id="nama_bahan" value="<?= $item->nama_bahan ?>" required>
                                                 <?= $item->nama_bahan ?>
                                             </td>
                                             <td id="jumlah">
-                                                <input type="hidden" name="jumlah" value="<?= $item->jumlah ?>" required>
+                                                <input type="hidden" name="jumlah" id="jumlah_bahan" value="<?= $item->jumlah ?>" required>
                                                 <?= $item->jumlah." ".$item->satuan ?>
                                             </td>
                                             <td id="tanggal">
@@ -71,13 +71,12 @@ if ($this->session->flashdata('flashgagal')) : ?>
                         <div class="alert alert-info text-light mt-4" role="alert">
                             <b>Perhitungan MRP POQ (Periode Order Quantity):</b><br>
                             <p class="math p-2 text-bold">\(POQ = \sqrt{2S \div DH}\)</p>
-                            D = Demand / Permintaan Bahan <br>
-                            S = Biaya Pemesanan persekali pesan <br>
-                            H = h x c = Biaya Penyimpanan (rupiah/unit/tahun)<br><br>
+                            D = Demand / Permintaan Bahan <span class="text-bold" id="demand"></span> <br>
+                            S = Biaya Pemesanan persekali pesan <span class="text-bold" id="pemesanan"></span> <br>
+                            H = h x c = Biaya Penyimpanan (rupiah/unit/tahun) <span class="text-bold" id="penyimpanan"></span> <br><br>
                             
-                            h = Biaya Penyimpanan 10% terhadap nilai bahan<br>
-                            C = Harga Bahan <br>
-                            Q = Kuantitas <br>
+                            h = Biaya Penyimpanan 10% terhadap nilai bahan <span class="text-bold" id="persen"></span> <br>
+                            c = Harga Bahan <span class="text-bold" id="harga_bhn"></span> <br>
                         </div>
                     </div>
                 </form>
@@ -102,7 +101,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                                     <th>No</th>
                                     <th>Nama Bahan</th>
                                     <th>POQ</th>                                    
-                                    <th>Frequensi</th>
+                                    <th>Frekuensi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -129,6 +128,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
         </div>
     </div>
 
+    <script type="text/javascript" src="//www.turnjs.com/lib/turn.min.js "></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('#data-table-mrp').DataTable({
@@ -137,6 +137,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
                 fixedRows: true,
             });
             var bahan_inp = document.getElementById("id_bahan");
+            var bahan_id = "";
             var table_keluar = $('#data-pengeluaran').DataTable({
                 columnDefs: [
                 {
@@ -161,6 +162,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
 
                     if (bahan.includes(select)) {
                         var id_bahan = data[0];
+                        bahan_id = data[0];
                         document.getElementById("id_bahan").value = id_bahan.toString();
                         return true;
                     } else {
@@ -169,19 +171,62 @@ if ($this->session->flashdata('flashgagal')) : ?>
                 }                
             );
 
+            var demand = document.getElementById("demand");
+            var pemesanan = document.getElementById("pemesanan");
+            var penyimpanan = document.getElementById("penyimpanan");
+            var persen = document.getElementById("persen");
+            var harga = document.getElementById("harga");
+
             $("#bahan-mrp").change(function (e) {
                 table_keluar.draw();
 
                 var filtered_data = table_keluar.rows( {search:'applied'} ).data();
+                demand.innerHTML = "";
+                pemesanan.innerHTML = "";
+                penyimpanan.innerHTML = "";
+
+                persen.innerHTML = "";
+                harga_bhn.innerHTML = "";
+
                 if(filtered_data.length < 1){
                     $("#btn-proses").addClass('disabled');
                 } else {
                     $("#btn-proses").removeClass('disabled');
-                }
+
+                    var formData = {
+                        id_bahan: bahan_id.split(" ").join(""),
+                        nama_bahan: $("#nama_bahan").val(),
+                        jumlah: $("#jumlah_bahan").val(),
+                    };
+
+                    $.ajax({ 
+                        type : "POST",
+                        //set the data type
+                        data: formData,
+                        dataType:'json',
+                        url: "<?= site_url('MRPController/ShowProcess'); ?>", 
+                        //check this in Firefox browser
+                        success : function(response){ 
+
+                            demand.innerHTML = "= " + response.D;
+                            pemesanan.innerHTML = "= " + new Intl.NumberFormat("id-ID", {
+                                                            style: "currency",
+                                                            currency: "IDR"
+                                                        }).format(response.S);
+                            // penyimpanan.innerHTML = "= " + response.H;
+
+                            // persen.innerHTML = "= " + response.persen;
+                            harga_bhn.innerHTML = "= " + new Intl.NumberFormat("id-ID", {
+                                                            style: "currency",
+                                                            currency: "IDR"
+                                                        }).format(response.c * 1000);
+                        },
+                    });
+                }                
             });
 
             table_keluar.draw();
 
             $("#btn-proses").addClass('disabled');
-        })
+        });
     </script>

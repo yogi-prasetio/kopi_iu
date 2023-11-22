@@ -48,4 +48,21 @@ class BahanModel extends CI_Model
         $this->db->sum("beli");
         return $this->db->get_where('tbl_bahan', $condition)->result();
     }
+
+    public function CheckBahanUsed()
+    {
+        $this->db->distinct();
+        $this->db->select('id_bahan');        
+        $data = $this->db->get('tbl_bom_detail')->result();
+
+        for($i=0; $i<count($data); $i++) {
+            $this->db->select('stok');
+            $stok = $this->db->get_where('tbl_bahan', ['id_bahan' => $data[$i]->id_bahan])->result()[0]->stok;
+            
+            if($stok < 500){
+                return false;
+            }
+        }
+        return true;
+    }
 }

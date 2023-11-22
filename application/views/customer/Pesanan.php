@@ -10,7 +10,7 @@ if ($this->session->flashdata('flashgagal')) : ?>
             <div class="card mb-2">
                 <div class="card-header pb-2">
                     <span class="h6">Tabel Pesanan</span>
-                    <a class="btn btn-sm btn-primary" style="float: right;" href="<?= base_url('TransaksiController/Add') ?>"><i class="fa fa-plus"></i></a>
+                    <a class="btn btn-sm btn-primary <?= $stok === false ? 'disabled' : '' ?>" style="float: right;" href="<?= base_url('TransaksiController/Add') ?>"><i class="fa fa-plus"></i></a>
                     <a class="btn btn-sm btn-secondary mx-2 <?= $pesanan == null ? 'disabled' : ''?>" style="float: right;" href="<?= base_url('TransaksiController/Cetak') ?>"><i class="fa fa-print"></i></a>
                 </div>
                 <div class="card-body px-4 pb-3 pt-0">
@@ -43,6 +43,13 @@ if ($this->session->flashdata('flashgagal')) : ?>
                         </table>
                     </div>
                 </div>
+                <?php
+                        if($stok == false) {
+                            echo '<div class="alert alert-warning text-white m-3 text-lg" role="alert">
+                                Mohon maaf Anda tidak bisa melakukan pesanan dikarenakan beberapa bahan sedang habis!
+                                </div>';
+                        }
+                    ?>
             </div>
         </div>
     </div>

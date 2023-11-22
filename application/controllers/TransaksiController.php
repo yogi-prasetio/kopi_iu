@@ -20,6 +20,8 @@ class TransaksiController extends CI_Controller
         $data['title'] = "Data Transaksi";
         $data['Transaksi'] = $this->TransaksiModel->GetTransaksiRequest();        
 
+        $stok_bahan = $this->BahanModel->CheckBahanUsed();
+        $data['stok'] = $stok_bahan;
         // var_dump($data['Transaksi']);
         // die();
         $this->load->view('template/header', $data);
@@ -35,6 +37,9 @@ class TransaksiController extends CI_Controller
         $condition = array('tbl_transaksi.id_user' => $id_user);
         $data['pesanan'] = $this->TransaksiModel->FindTransaksiRequest($condition);
 
+        $stok_bahan = $this->BahanModel->CheckBahanUsed();
+        $data['stok'] = $stok_bahan;
+        
         $this->load->view('template/header', $data);
         $this->load->view('template/navbar', $data);
         $this->load->view('customer/Pesanan', $data);
