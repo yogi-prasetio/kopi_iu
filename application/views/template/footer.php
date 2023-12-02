@@ -18,7 +18,9 @@
         </div>
     </div>
 </main>
-<div class="fixed-plugin">
+
+<!-- SETTING COLOR THEME -->
+<!-- <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
         <i class="fa fa-cog py-2"> </i>
     </a>
@@ -33,11 +35,11 @@
                     <i class="fa fa-close"></i>
                 </button>
             </div>
-            <!-- End Toggle Button -->
+            //End Toggle Button
         </div>
         <hr class="horizontal dark my-1">
         <div class="card-body pt-sm-3 pt-0 overflow-auto">
-            <!-- Sidebar Backgrounds -->
+            // Sidebar Backgrounds
             <div>
                 <h6 class="mb-0">Sidebar Colors</h6>
             </div>
@@ -51,7 +53,7 @@
                     <span class="badge filter bg-gradient-danger" data-color="danger" onclick="sidebarColor(this)"></span>
                 </div>
             </a>
-            <!-- Sidenav Type -->
+            // Sidenav Type 
             <div class="mt-3">
                 <h6 class="mb-0">Sidenav Type</h6>
                 <p class="text-sm">Choose between 2 different sidenav types.</p>
@@ -61,7 +63,7 @@
                 <button class="btn bg-gradient-primary w-100 px-3 mb-2" data-class="bg-default" onclick="sidebarType(this)">Dark</button>
             </div>
             <p class="text-sm d-xl-none d-block mt-2">You can change the sidenav type just on desktop view.</p>
-            <!-- Navbar Fixed -->
+            // Navbar Fixed 
             <div class="d-flex my-3">
                 <h6 class="mb-0">Navbar Fixed</h6>
                 <div class="form-check form-switch ps-0 ms-auto my-auto">
@@ -78,7 +80,7 @@
 
         </div>
     </div>
-</div>
+</div> -->
 
 <!--   Core JS Files   -->
 <script src="<?= base_url() ?>assets/js/core/popper.min.js"></script>
